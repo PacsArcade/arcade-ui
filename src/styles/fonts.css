@@ -1,7 +1,5 @@
-/* Brand type: Retronoid (display) ships with the package; Press Start 2P
-   (micro/pixel) and Roboto (body) load from Google Fonts at runtime. */
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap");
-
+/* Retronoid display face — ships with the package (fonts/ dir).
+   Press Start 2P + Roboto load via the Google Fonts @import in arcade.css. */
 @font-face {
   font-family: "Retronoid";
   src: url("../fonts/Retronoid.ttf") format("truetype");

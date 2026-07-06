@@ -31,7 +31,10 @@ export function BossHealthBar({
     <div className="pa-bosshp">
       <div className="pa-bosshp__head">
         <span className="pa-bosshp__name pa-glow-ghost">{bossName}</span>
-        <span className="pa-bosshp__hp">{Math.ceil(hpPct)}% HP</span>
+        <span>
+          {lastHitSats ? <span className="pa-bosshp__damage">-{formatSats(lastHitSats)}</span> : null}
+          <span className="pa-bosshp__hp">{Math.ceil(hpPct)}% HP</span>
+        </span>
       </div>
       <div
         className="pa-bosshp__track"
@@ -42,7 +45,6 @@ export function BossHealthBar({
         aria-label={`${bossName} health remaining`}
       >
         <div className="pa-bosshp__fill" style={{ width: `${hpPct}%` }} />
-        {lastHitSats ? <span className="pa-bosshp__damage">-{formatSats(lastHitSats)}</span> : null}
       </div>
       {showRealNumbers ? (
         <div className="pa-bosshp__sub">

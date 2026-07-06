@@ -12,7 +12,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./styles.css": "./dist/arcade.css"
+    "./styles.css": "./dist/arcade.css",
+    "./fonts.css": "./dist/fonts.css"
   },
   "files": [
     "dist",

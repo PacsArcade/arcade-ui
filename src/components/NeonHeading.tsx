@@ -17,7 +17,7 @@ export interface NeonHeadingProps {
  */
 export function NeonHeading({ children, color = "coin", as = "h2", flicker = false, className }: NeonHeadingProps) {
   const Tag = as;
-  const cls = ["pa-heading", `pa-heading--${color}`, `pa-glow-${color}`, flicker ? "pa-flicker" : "", className ?? ""]
+  const cls = ["pa-heading", `pa-heading--${color}`, flicker ? "pa-flicker" : "", className ?? ""]
     .filter(Boolean)
     .join(" ");
   return <Tag className={cls}>{children}</Tag>;

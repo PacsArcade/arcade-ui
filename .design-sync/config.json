@@ -1,0 +1,9 @@
+{
+  "pkg": "@pacsarcade/arcade-ui",
+  "globalName": "PacsArcadeUI",
+  "shape": "package",
+  "buildCmd": "npm run build",
+  "cssEntry": "dist/arcade.css",
+  "extraFonts": ["dist/fonts.css"],
+  "readmeHeader": ".design-sync/conventions.md"
+}
