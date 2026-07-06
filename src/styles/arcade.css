@@ -1,0 +1,648 @@
+/* ==========================================================================
+   Pac's Arcade UI — arcade.css
+   8-bit beat-'em-up crowdfunding kit. CRT-authentic but readable:
+   strongest glow is reserved for headings/banners; body copy stays crisp.
+   coin = money/funding surfaces only; neon = success/live; ghost = danger.
+   ========================================================================== */
+@import "./fonts.css";
+
+:root {
+  /* palette */
+  --pa-void: #050505;
+  --pa-panel: #1a1a1a;
+  --pa-coin: #ffd700;
+  --pa-neon: #39ff14;
+  --pa-pink: #ff00ff;
+  --pa-cyan: #00ffff;
+  --pa-ghost: #e91e63;
+  --pa-edge: #333333;
+  --pa-fg: #ffffff;
+  --pa-fg-dim: #888888;
+
+  /* type */
+  --pa-font-arcade: "Retronoid", "Press Start 2P", monospace;
+  --pa-font-pixel: "Press Start 2P", monospace;
+  --pa-font-body: "Roboto", sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Text glow utilities (headers/accents only — never body copy)
+   -------------------------------------------------------------------------- */
+.pa-glow-coin  { text-shadow: 0 0 6px rgba(255, 215, 0, 0.9), 0 0 24px rgba(255, 215, 0, 0.45); }
+.pa-glow-neon  { text-shadow: 0 0 6px rgba(57, 255, 20, 0.9), 0 0 24px rgba(57, 255, 20, 0.45); }
+.pa-glow-pink  { text-shadow: 0 0 6px rgba(255, 0, 255, 0.9), 0 0 24px rgba(255, 0, 255, 0.45); }
+.pa-glow-cyan  { text-shadow: 0 0 6px rgba(0, 255, 255, 0.9), 0 0 24px rgba(0, 255, 255, 0.45); }
+.pa-glow-ghost { text-shadow: 0 0 6px rgba(233, 30, 99, 0.9), 0 0 24px rgba(233, 30, 99, 0.45); }
+
+/* --------------------------------------------------------------------------
+   Animations
+   -------------------------------------------------------------------------- */
+@keyframes pa-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.pa-blink { animation: pa-blink 1.06s steps(1) infinite; }
+
+@keyframes pa-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.pa-pulse { animation: pa-pulse 1.4s ease-in-out infinite; }
+
+@keyframes pa-flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  8%  { opacity: 0.25; filter: brightness(0.4); }
+  12% { opacity: 1; filter: brightness(1.9); }
+  20% { opacity: 0.45; filter: brightness(0.6); }
+  26% { opacity: 1; filter: brightness(1.5); }
+  40% { opacity: 0.8; }
+  48% { opacity: 1; filter: brightness(1); }
+}
+.pa-flicker { animation: pa-flicker 2.4s linear 1 both; }
+
+@keyframes pa-damage-pop {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.7); }
+  25%  { opacity: 1; transform: translateY(-4px) scale(1.15); }
+  100% { opacity: 1; transform: translateY(-10px) scale(1); }
+}
+
+@keyframes pa-claim-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(57, 255, 20, 0.5); }
+  50% { box-shadow: 0 0 22px rgba(57, 255, 20, 0.95); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pa-blink, .pa-pulse, .pa-flicker,
+  .pa-bosshp-damage,
+  .pa-tier--claimable,
+  .pa-select-card--selected {
+    animation: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CRTOverlay — fixed scanline layer (ported from pacsarcade-com body::after)
+   -------------------------------------------------------------------------- */
+.pa-crt {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0px,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+.pa-crt--absolute { position: absolute; }
+
+/* --------------------------------------------------------------------------
+   PixelFrame — chunky bordered panel with optional neon glow + nameplate
+   -------------------------------------------------------------------------- */
+.pa-frame {
+  position: relative;
+  background-color: var(--pa-panel);
+  border: 3px solid var(--pa-edge);
+  color: var(--pa-fg);
+  font-family: var(--pa-font-body);
+}
+.pa-frame--pad-sm { padding: 0.75rem; }
+.pa-frame--pad-md { padding: 1.5rem; }
+.pa-frame--pad-lg { padding: 2.5rem; }
+
+.pa-frame--coin  { border-color: var(--pa-coin);  box-shadow: 0 0 12px rgba(255, 215, 0, 0.35); }
+.pa-frame--neon  { border-color: var(--pa-neon);  box-shadow: 0 0 12px rgba(57, 255, 20, 0.35); }
+.pa-frame--pink  { border-color: var(--pa-pink);  box-shadow: 0 0 12px rgba(255, 0, 255, 0.35); }
+.pa-frame--cyan  { border-color: var(--pa-cyan);  box-shadow: 0 0 12px rgba(0, 255, 255, 0.35); }
+.pa-frame--ghost { border-color: var(--pa-ghost); box-shadow: 0 0 12px rgba(233, 30, 99, 0.35); }
+
+.pa-frame__title {
+  position: absolute;
+  top: -0.7em;
+  left: 0.75rem;
+  padding: 0 0.5rem;
+  background-color: var(--pa-void);
+  font-family: var(--pa-font-pixel);
+  font-size: 0.65rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   NeonHeading — display type with neon sign glow
+   -------------------------------------------------------------------------- */
+.pa-heading {
+  font-family: var(--pa-font-arcade);
+  text-transform: uppercase;
+  text-wrap: balance;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--pa-fg);
+}
+.pa-heading--coin  { color: var(--pa-coin); }
+.pa-heading--neon  { color: var(--pa-neon); }
+.pa-heading--pink  { color: var(--pa-pink); }
+.pa-heading--cyan  { color: var(--pa-cyan); }
+.pa-heading--ghost { color: var(--pa-ghost); }
+
+/* --------------------------------------------------------------------------
+   ArcadeButton — INSERT COIN / PRESS START
+   -------------------------------------------------------------------------- */
+.pa-btn {
+  display: inline-block;
+  font-family: var(--pa-font-pixel);
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  border: 4px solid var(--pa-void);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  line-height: 1.4;
+}
+.pa-btn--sm { font-size: 0.65rem; padding: 0.5rem 1rem; }
+.pa-btn--md { font-size: 0.85rem; padding: 0.85rem 1.6rem; }
+.pa-btn--lg { font-size: 1rem;   padding: 1rem 2rem; }
+.pa-btn--full { display: block; width: 100%; }
+
+.pa-btn--coin {
+  background-color: var(--pa-coin);
+  color: var(--pa-void);
+  box-shadow: 4px 4px 0 var(--pa-ghost);
+}
+.pa-btn--neon {
+  background-color: var(--pa-neon);
+  color: var(--pa-void);
+  box-shadow: 4px 4px 0 var(--pa-cyan);
+}
+.pa-btn--cyan {
+  background-color: var(--pa-cyan);
+  color: var(--pa-void);
+  box-shadow: 4px 4px 0 var(--pa-pink);
+}
+.pa-btn--ghost {
+  background-color: transparent;
+  color: var(--pa-ghost);
+  border-color: var(--pa-ghost);
+  box-shadow: 4px 4px 0 rgba(233, 30, 99, 0.35);
+}
+
+.pa-btn:hover:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--pa-ghost);
+}
+.pa-btn--neon:hover:not(:disabled) { box-shadow: 2px 2px 0 var(--pa-cyan); }
+.pa-btn--cyan:hover:not(:disabled) { box-shadow: 2px 2px 0 var(--pa-pink); }
+.pa-btn--ghost:hover:not(:disabled) { box-shadow: 2px 2px 0 rgba(233, 30, 99, 0.35); }
+
+.pa-btn:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 transparent;
+}
+.pa-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+.pa-btn:focus-visible {
+  outline: 3px dashed var(--pa-cyan);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   EnergyBar — funding progress as segmented player energy
+   -------------------------------------------------------------------------- */
+.pa-energy { font-family: var(--pa-font-pixel); color: var(--pa-fg); }
+.pa-energy__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+}
+.pa-energy__label { color: var(--pa-fg); letter-spacing: 0.08em; }
+.pa-energy__percent { color: var(--pa-coin); }
+
+.pa-energy__track {
+  position: relative;
+  height: 22px;
+  background-color: var(--pa-void);
+  border: 3px solid var(--pa-edge);
+  overflow: hidden;
+}
+.pa-energy__fill,
+.pa-energy__pending {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+.pa-energy__fill {
+  /* segment notches every 12px, like cabinet health bars */
+  background-image: repeating-linear-gradient(
+    90deg,
+    currentColor 0px,
+    currentColor 9px,
+    rgba(0, 0, 0, 0.55) 9px,
+    rgba(0, 0, 0, 0.55) 12px
+  );
+  background-color: currentColor;
+}
+.pa-energy--low  .pa-energy__fill { color: var(--pa-ghost); box-shadow: 0 0 10px rgba(233, 30, 99, 0.6); }
+.pa-energy--mid  .pa-energy__fill { color: var(--pa-coin);  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+.pa-energy--high .pa-energy__fill { color: var(--pa-neon);  box-shadow: 0 0 10px rgba(57, 255, 20, 0.6); }
+
+.pa-energy__pending {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.35) 0px,
+    rgba(255, 255, 255, 0.35) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+.pa-energy__sub {
+  margin-top: 0.4rem;
+  font-size: 0.55rem;
+  color: var(--pa-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   BossHealthBar — remaining goal as boss HP
+   -------------------------------------------------------------------------- */
+.pa-bosshp { font-family: var(--pa-font-pixel); color: var(--pa-fg); position: relative; }
+.pa-bosshp__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+.pa-bosshp__name {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--pa-ghost);
+  letter-spacing: 0.08em;
+}
+.pa-bosshp__hp { font-size: 0.55rem; color: var(--pa-fg-dim); }
+
+.pa-bosshp__track {
+  position: relative;
+  height: 26px;
+  background-color: var(--pa-void);
+  border: 3px solid var(--pa-ghost);
+  box-shadow: 0 0 14px rgba(233, 30, 99, 0.4);
+  overflow: hidden;
+}
+.pa-bosshp__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--pa-ghost);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--pa-ghost) 0px,
+    var(--pa-ghost) 9px,
+    rgba(0, 0, 0, 0.5) 9px,
+    rgba(0, 0, 0, 0.5) 12px
+  );
+}
+.pa-bosshp__damage {
+  position: absolute;
+  right: 0.25rem;
+  top: -1.4rem;
+  font-size: 0.7rem;
+  color: var(--pa-coin);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+  animation: pa-damage-pop 0.9s ease-out both;
+}
+.pa-bosshp__sub {
+  margin-top: 0.4rem;
+  font-size: 0.55rem;
+  color: var(--pa-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   StatChip / StatsStrip — Goal · Raised · Backers · Days left
+   -------------------------------------------------------------------------- */
+.pa-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.pa-stat {
+  flex: 1 1 auto;
+  min-width: 7rem;
+  background-color: var(--pa-panel);
+  border: 2px solid var(--pa-edge);
+  padding: 0.6rem 0.9rem;
+  text-align: center;
+}
+.pa-stat__value {
+  display: block;
+  font-family: var(--pa-font-arcade);
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--pa-fg);
+}
+.pa-stat--coin  .pa-stat__value { color: var(--pa-coin); }
+.pa-stat--neon  .pa-stat__value { color: var(--pa-neon); }
+.pa-stat--pink  .pa-stat__value { color: var(--pa-pink); }
+.pa-stat--cyan  .pa-stat__value { color: var(--pa-cyan); }
+.pa-stat--ghost .pa-stat__value { color: var(--pa-ghost); }
+.pa-stat__label {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--pa-font-pixel);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pa-fg-dim);
+}
+
+/* --------------------------------------------------------------------------
+   TrustBadge — wallet linked / nostr verified / rewards program
+   -------------------------------------------------------------------------- */
+.pa-trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.7rem;
+  border: 2px solid var(--pa-edge);
+  background-color: var(--pa-void);
+  font-family: var(--pa-font-pixel);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pa-fg-dim);
+}
+.pa-trust__dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  background-color: var(--pa-fg-dim);
+}
+.pa-trust--verified { color: var(--pa-fg); border-color: var(--pa-neon); }
+.pa-trust--verified .pa-trust__dot {
+  background-color: var(--pa-neon);
+  box-shadow: 0 0 6px rgba(57, 255, 20, 0.9);
+}
+
+/* --------------------------------------------------------------------------
+   RewardTierCard — weapon pickup / item drop
+   -------------------------------------------------------------------------- */
+.pa-tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: var(--pa-panel);
+  border: 3px solid var(--pa-edge);
+  padding: 1.25rem;
+  color: var(--pa-fg);
+  font-family: var(--pa-font-body);
+}
+.pa-tier__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.pa-tier__icon {
+  flex: none;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  background-color: var(--pa-void);
+  border: 2px solid var(--pa-edge);
+}
+.pa-tier__name {
+  font-family: var(--pa-font-pixel);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--pa-cyan);
+}
+.pa-tier__amount {
+  font-family: var(--pa-font-arcade);
+  font-size: 1.3rem;
+  color: var(--pa-coin);
+}
+.pa-tier__desc { font-size: 0.9rem; line-height: 1.5; color: #ccc; }
+.pa-tier__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-family: var(--pa-font-pixel);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pa-fg-dim);
+}
+.pa-tier__status {
+  position: absolute;
+  top: -0.7em;
+  right: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  background-color: var(--pa-void);
+  font-family: var(--pa-font-pixel);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pa-tier--locked { opacity: 0.55; }
+.pa-tier--locked .pa-tier__status { color: var(--pa-fg-dim); border: 2px solid var(--pa-edge); }
+.pa-tier--claimable { border-color: var(--pa-neon); animation: pa-claim-pulse 1.6s ease-in-out infinite; }
+.pa-tier--claimable .pa-tier__status { color: var(--pa-neon); border: 2px solid var(--pa-neon); }
+.pa-tier--claimed { border-color: var(--pa-edge); }
+.pa-tier--claimed .pa-tier__status { color: var(--pa-cyan); border: 2px solid var(--pa-cyan); }
+
+/* --------------------------------------------------------------------------
+   MilestoneBadge — breakable crate / stretch goal
+   -------------------------------------------------------------------------- */
+.pa-milestone {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 7.5rem;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  background-color: var(--pa-panel);
+  border: 3px solid var(--pa-edge);
+  font-family: var(--pa-font-pixel);
+}
+.pa-milestone__percent {
+  font-family: var(--pa-font-arcade);
+  font-size: 1.4rem;
+  color: var(--pa-fg-dim);
+}
+.pa-milestone__label {
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--pa-fg-dim);
+}
+.pa-milestone--unlocked { border-color: var(--pa-coin); box-shadow: 0 0 12px rgba(255, 215, 0, 0.35); }
+.pa-milestone--unlocked .pa-milestone__percent { color: var(--pa-coin); }
+.pa-milestone--unlocked .pa-milestone__label { color: var(--pa-fg); }
+
+/* --------------------------------------------------------------------------
+   HighScoreBoard — top contributors
+   -------------------------------------------------------------------------- */
+.pa-hiscore {
+  background-color: var(--pa-void);
+  border: 3px solid var(--pa-edge);
+  padding: 1.25rem;
+  font-family: var(--pa-font-pixel);
+  color: var(--pa-fg);
+}
+.pa-hiscore__title {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--pa-coin);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.9), 0 0 24px rgba(255, 215, 0, 0.45);
+}
+.pa-hiscore__table { width: 100%; border-collapse: collapse; font-size: 0.6rem; }
+.pa-hiscore__table th {
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--pa-fg-dim);
+  border-bottom: 2px solid var(--pa-edge);
+}
+.pa-hiscore__table td { padding: 0.5rem; text-transform: uppercase; }
+.pa-hiscore__table td:last-child, .pa-hiscore__table th:last-child { text-align: right; }
+.pa-hiscore__row--1 td { color: var(--pa-coin); }
+.pa-hiscore__row--2 td { color: var(--pa-cyan); }
+.pa-hiscore__row--3 td { color: var(--pa-pink); }
+
+/* --------------------------------------------------------------------------
+   CutsceneBlock — update post as intermission dialogue box
+   -------------------------------------------------------------------------- */
+.pa-cutscene {
+  position: relative;
+  background-color: var(--pa-void);
+  border: 3px solid var(--pa-fg);
+  outline: 3px solid var(--pa-void);
+  outline-offset: 3px;
+  padding: 1.5rem;
+  color: var(--pa-fg);
+  font-family: var(--pa-font-body);
+}
+.pa-cutscene__tag {
+  position: absolute;
+  top: -0.7em;
+  left: 0.75rem;
+  padding: 0 0.5rem;
+  background-color: var(--pa-void);
+  font-family: var(--pa-font-pixel);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  color: var(--pa-cyan);
+}
+.pa-cutscene__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.pa-cutscene__title {
+  margin: 0;
+  font-family: var(--pa-font-pixel);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  text-transform: uppercase;
+  color: var(--pa-coin);
+}
+.pa-cutscene__date {
+  flex: none;
+  font-family: var(--pa-font-pixel);
+  font-size: 0.5rem;
+  color: var(--pa-fg-dim);
+}
+.pa-cutscene__body { font-size: 0.95rem; line-height: 1.6; color: #ccc; text-wrap: pretty; }
+.pa-cutscene__body p { margin: 0 0 0.75rem; }
+.pa-cutscene__body p:last-child { margin-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   CharacterSelectCard — campaign as fighter card in the roster
+   -------------------------------------------------------------------------- */
+.pa-select-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--pa-panel);
+  border: 3px solid var(--pa-edge);
+  color: var(--pa-fg);
+  font-family: var(--pa-font-body);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.pa-select-card:hover { border-color: var(--pa-coin); transform: translateY(-4px); }
+.pa-select-card--selected {
+  border-color: var(--pa-coin);
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.4);
+}
+.pa-select-card__cursor {
+  position: absolute;
+  top: -0.8em;
+  left: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  background-color: var(--pa-coin);
+  color: var(--pa-void);
+  font-family: var(--pa-font-pixel);
+  font-size: 0.55rem;
+  animation: pa-blink 1.06s steps(1) infinite;
+}
+.pa-select-card__art {
+  height: 8.5rem;
+  background-color: var(--pa-void);
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid var(--pa-edge);
+  display: grid;
+  place-items: center;
+  font-family: var(--pa-font-arcade);
+  font-size: 2rem;
+  color: var(--pa-edge);
+}
+.pa-select-card__body { display: flex; flex-direction: column; gap: 0.6rem; padding: 1rem; }
+.pa-select-card__title {
+  margin: 0;
+  font-family: var(--pa-font-pixel);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  text-transform: uppercase;
+  color: var(--pa-fg);
+}
+.pa-select-card__creator {
+  font-family: var(--pa-font-pixel);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  color: var(--pa-cyan);
+}
+.pa-select-card__stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--pa-font-pixel);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  color: var(--pa-fg-dim);
+}
+.pa-select-card__stats strong { display: block; margin-top: 0.2rem; font-size: 0.65rem; color: var(--pa-coin); }
