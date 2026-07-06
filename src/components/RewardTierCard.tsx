@@ -16,12 +16,15 @@ const TYPE_LABELS: Record<string, string> = {
   access: "ACCESS",
 };
 
+/** Etch lifecycle states; the last two are deprecated back-compat aliases. */ // copy-lint-ignore
+export type RewardTierStatus = "locked" | "ready" | "etched" | "claimable" | "claimed"; // copy-lint-ignore
+
 export interface RewardTierCardProps {
   /** Arcade item name, e.g. "PIXEL SWORD" or "GOLD CARTRIDGE". */
   name: string;
-  /** Minimum contribution in sats to earn this drop. */
+  /** Minimum contribution in sats to earn this reward. */
   amountSats: number;
-  /** What kind of on-chain reward this tier mints. */
+  /** What kind of on-chain reward this tier etches. */
   rewardType: "ordinal" | "rune" | "digital" | "access";
   /** What the backer gets, in plain language. */
   description: ReactNode;
@@ -30,22 +33,24 @@ export interface RewardTierCardProps {
   /** Total supply cap, when the tier is capped. */
   supplyCap?: number;
   /**
-   * Claim lifecycle: locked (not eligible), claimable (eligible + confirmed on-chain),
-   * claimed (done — show the txid via claimedDetail). Omit for a browsing/pre-donation card.
+   * Etch lifecycle: locked (not eligible), ready (eligible + donation confirmed
+   * on-chain — the etch can run), etched (inscribed/etched and delivered — show
+   * the reveal txid via detail). Omit for a browsing/pre-donation card.
    */
-  status?: "locked" | "claimable" | "claimed";
-  /** Extra status line, e.g. estimated delivery or the claim txid. */
+  status?: RewardTierStatus;
+  /** Extra status line, e.g. estimated delivery or the reveal txid. */
   detail?: string;
   /** CTA label. Default depends on status. */
   ctaLabel?: string;
-  /** Called when the backer picks/claims this tier. Omit to hide the button. */
+  /** Called when the backer picks this tier / starts the etch. Omit to hide the button. */
   onSelect?: () => void;
 }
 
 /**
- * A reward tier as a weapon pickup / item drop. The three claim states must
- * always be visually distinct: locked (dim), claimable (neon pulse), claimed
- * (cyan check). Contribution amounts are sats and render in coin yellow.
+ * A reward tier as a weapon pickup — the loot a backer earns. The three etch
+ * states must always be visually distinct: locked (dim), ready (neon pulse),
+ * etched (cyan check). Contribution amounts are sats and render in coin yellow.
+ * House verb is ETCH — see the conventions banned-verbiage table before writing copy.
  */
 export function RewardTierCard({
   name,
@@ -59,9 +64,12 @@ export function RewardTierCard({
   ctaLabel,
   onSelect,
 }: RewardTierCardProps) {
-  const cls = `pa-tier${status ? ` pa-tier--${status}` : ""}`;
-  const statusText = status === "locked" ? "LOCKED" : status === "claimable" ? "CLAIMABLE" : status === "claimed" ? "✓ CLAIMED" : null;
-  const defaultCta = status === "claimable" ? "CLAIM DROP" : "PICK UP";
+  // normalize deprecated aliases
+  const state = status === "claimable" ? "ready" : status === "claimed" ? "etched" : status; // copy-lint-ignore
+  const cls = `pa-tier${state ? ` pa-tier--${state}` : ""}`;
+  const statusText =
+    state === "locked" ? "LOCKED" : state === "ready" ? "READY TO ETCH" : state === "etched" ? "✓ ETCHED" : null;
+  const defaultCta = state === "ready" ? "ETCH TO WALLET" : "PICK UP";
   return (
     <div className={cls}>
       {statusText ? <span className="pa-tier__status">{statusText}</span> : null}
@@ -80,8 +88,8 @@ export function RewardTierCard({
         {supplyCap != null ? <span>{remaining ?? supplyCap} / {supplyCap} LEFT</span> : null}
         {detail ? <span>{detail}</span> : null}
       </div>
-      {onSelect && status !== "locked" && status !== "claimed" ? (
-        <ArcadeButton variant={status === "claimable" ? "neon" : "coin"} size="sm" fullWidth onClick={onSelect}>
+      {onSelect && state !== "locked" && state !== "etched" ? (
+        <ArcadeButton variant={state === "ready" ? "neon" : "coin"} size="sm" fullWidth onClick={onSelect}>
           {ctaLabel ?? defaultCta}
         </ArcadeButton>
       ) : null}

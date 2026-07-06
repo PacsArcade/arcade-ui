@@ -9,10 +9,10 @@ export function Browsing() {
         name="GOLD CARTRIDGE"
         amountSats={100_000}
         rewardType="ordinal"
-        description="A 1-of-50 pixel-art cartridge inscribed as an ordinal — proof you helped light the marquee, fren."
+        description="A 1-of-50 pixel-art cartridge inscribed onto a satoshi — proof you helped light the marquee, fren."
         supplyCap={50}
         remaining={37}
-        detail="MINTS AFTER GOAL"
+        detail="ETCHED AFTER GOAL"
         onSelect={() => {}}
       />
     </div>
@@ -34,15 +34,15 @@ export function Locked() {
   );
 }
 
-export function Claimable() {
+export function ReadyToEtch() {
   return (
     <div className="pa-screen" style={wrap}>
       <RewardTierCard
         name="ARCADE RUNE"
         amountSats={25_000}
         rewardType="rune"
-        description="The campaign rune drops straight to the wallet tied to your fren tag — donate first, receive after."
-        status="claimable"
+        description="The campaign rune etches straight to the wallet tied to your fren tag — donate first, receive after."
+        status="ready"
         supplyCap={500}
         remaining={212}
         onSelect={() => {}}
@@ -51,7 +51,7 @@ export function Claimable() {
   );
 }
 
-export function Claimed() {
+export function Etched() {
   return (
     <div className="pa-screen" style={wrap}>
       <RewardTierCard
@@ -59,7 +59,7 @@ export function Claimed() {
         amountSats={50_000}
         rewardType="digital"
         description="High-res sprite pack + your fren tag carved into the cabinet's credits screen."
-        status="claimed"
+        status="etched"
         detail="TX 8F3A…C21D"
       />
     </div>

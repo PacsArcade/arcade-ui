@@ -9,7 +9,7 @@ export interface MilestoneBadgeProps {
 
 /**
  * A stretch-goal crate on the funding journey. Locked crates keep their reward
- * as a "???" mystery drop; unlocked ones light up coin-gold. Render a row of
+ * as "???" mystery loot; unlocked ones light up coin-gold. Render a row of
  * these under the progress bar in percent order.
  */
 export function MilestoneBadge({ percent, label, unlocked }: MilestoneBadgeProps) {

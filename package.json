@@ -20,7 +20,8 @@
     "fonts"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node scripts/copy-assets.mjs"
+    "build": "node scripts/copy-lint.mjs && tsc -p tsconfig.build.json && node scripts/copy-assets.mjs",
+    "lint:copy": "node scripts/copy-lint.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

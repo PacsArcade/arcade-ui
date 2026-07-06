@@ -23,7 +23,7 @@ export function PatchNotes() {
   return (
     <div className="pa-screen" style={wrap}>
       <CutsceneBlock tag="UPDATE 04" title="PATCH NOTES v0.5" date="2026-07-21">
-        <p>+ Claim window for the Arcade Rune opens Friday</p>
+        <p>+ The Arcade Rune etches to backer wallets Friday</p>
         <p>+ 12 new backers joined the high-score board</p>
         <p>+ Fixed: pending sats now show on the energy bar within one block</p>
       </CutsceneBlock>

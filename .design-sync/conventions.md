@@ -27,11 +27,15 @@ glue with inline styles or small style blocks that reference the tokens:
 - Progress (`EnergyBar`, `BossHealthBar`) is driven by **confirmed sats only**; pass unconfirmed
   amounts as `pendingSats` (hatched sub-meter). Keep `showRealNumbers` on — arcade skin never
   hides Goal/Raised/Days-left truth.
-- `RewardTierCard` claim states (`locked`/`claimable`/`claimed`) must stay visually distinct.
+- `RewardTierCard` etch states (`locked`/`ready`/`etched`) must stay visually distinct.
 - `TrustBadge verified` only when the underlying check (wallet link, nostr handle) actually passed.
 - Amounts are sats — format with the exported `formatSats(n)`.
 - Voice: say **"fren"**, never "friend"; game language over finance language ("INSERT COIN", not
   "Checkout").
+- **Banned verbiage (NFT-era words never appear in copy you write):** mint/minting → etch/inscribe;
+  claim → "sent to your wallet" / "etch to wallet"; drop/airdrop → "arrives after confirmation" /
+  "etching"; NFT/token → artifact / inscription / rune; gas → network fee (sats/vB). House verb is
+  **ETCH** (runes are etched; inscriptions are inscribed — both display as ETCH).
 
 ## Where the truth lives
 

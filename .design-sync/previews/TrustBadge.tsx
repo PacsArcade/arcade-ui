@@ -5,7 +5,7 @@ export function TrustRow() {
     <div className="pa-screen" style={{ padding: 24, display: "flex", gap: 12, flexWrap: "wrap" }}>
       <TrustBadge kind="wallet" verified detail="bc1q…arcade — creator's own xpub" />
       <TrustBadge kind="nostr" verified detail="pac@pacsarcade.org" />
-      <TrustBadge kind="rewards" verified detail="Runes + ordinals drop after confirmation" />
+      <TrustBadge kind="rewards" verified detail="Runes + ordinals are etched after confirmation" />
     </div>
   );
 }

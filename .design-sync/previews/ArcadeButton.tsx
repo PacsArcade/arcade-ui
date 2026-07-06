@@ -6,7 +6,7 @@ export function Variants() {
   return (
     <div className="pa-screen" style={wrap}>
       <ArcadeButton variant="coin">INSERT COIN</ArcadeButton>
-      <ArcadeButton variant="neon">CLAIM DROP</ArcadeButton>
+      <ArcadeButton variant="neon">ETCH IT</ArcadeButton>
       <ArcadeButton variant="cyan">VIEW WALLET</ArcadeButton>
       <ArcadeButton variant="ghost">ABANDON RUN</ArcadeButton>
     </div>

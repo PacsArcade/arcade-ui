@@ -77,7 +77,7 @@
   100% { opacity: 1; transform: translateY(-10px) scale(1); }
 }
 
-@keyframes pa-claim-pulse {
+@keyframes pa-etch-pulse {
   0%, 100% { box-shadow: 0 0 8px rgba(57, 255, 20, 0.5); }
   50% { box-shadow: 0 0 22px rgba(57, 255, 20, 0.95); }
 }
@@ -85,7 +85,7 @@
 @media (prefers-reduced-motion: reduce) {
   .pa-blink, .pa-pulse, .pa-flicker,
   .pa-bosshp-damage,
-  .pa-tier--claimable,
+  .pa-tier--ready,
   .pa-select-card--selected {
     animation: none !important;
   }
@@ -476,10 +476,10 @@
 
 .pa-tier--locked { opacity: 0.55; }
 .pa-tier--locked .pa-tier__status { color: var(--pa-fg-dim); border: 2px solid var(--pa-edge); }
-.pa-tier--claimable { border-color: var(--pa-neon); animation: pa-claim-pulse 1.6s ease-in-out infinite; }
-.pa-tier--claimable .pa-tier__status { color: var(--pa-neon); border: 2px solid var(--pa-neon); }
-.pa-tier--claimed { border-color: var(--pa-edge); }
-.pa-tier--claimed .pa-tier__status { color: var(--pa-cyan); border: 2px solid var(--pa-cyan); }
+.pa-tier--ready { border-color: var(--pa-neon); animation: pa-etch-pulse 1.6s ease-in-out infinite; }
+.pa-tier--ready .pa-tier__status { color: var(--pa-neon); border: 2px solid var(--pa-neon); }
+.pa-tier--etched { border-color: var(--pa-edge); }
+.pa-tier--etched .pa-tier__status { color: var(--pa-cyan); border: 2px solid var(--pa-cyan); }
 
 /* --------------------------------------------------------------------------
    MilestoneBadge — breakable crate / stretch goal
