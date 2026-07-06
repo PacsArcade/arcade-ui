@@ -24,5 +24,6 @@
   gitignored and reinstalled per clone — a newer playwright there may need a browser reinstall).
 - The Google Fonts @import means offline render checks lose Press Start 2P/Roboto — cells would
   look different but still grade; don't chase that as a regression.
-- First upload still pending design authorization at the time of writing — if config lacks
-  `projectId`, the upload never happened; treat as first sync.
+- First sync uploaded 2026-07-05 to project cf3c6360-6e0f-415f-b789-84c6d9748b8b ("Pac's Arcade —
+  Arcade UI"), 81 files verified by post-upload list. Re-syncs are anchored: fetch the project's
+  `_ds_sync.json` → `.design-sync/.cache/remote-sync.json` and run the driver with `--remote`.

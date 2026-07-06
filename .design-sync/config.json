@@ -1,5 +1,6 @@
 {
   "pkg": "@pacsarcade/arcade-ui",
+  "projectId": "cf3c6360-6e0f-415f-b789-84c6d9748b8b",
   "globalName": "PacsArcadeUI",
   "shape": "package",
   "buildCmd": "npm run build",
