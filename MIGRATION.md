@@ -75,9 +75,18 @@ directly.
 ## Versioning
 
 - 0.1.0 — published campaign components (ArcadeButton … TrustBadge) + pa-* CSS.
-- 0.2.0 (this) — adds header suite (SiteHeader/BlockClock/EasyModeToggle/
+- 0.2.0 — adds header suite (SiteHeader/BlockClock/EasyModeToggle/
   CRTOverlay + easy-mode store), Tailwind theme layer, verse presets,
   easy-mode CSS, fonts, pixel-₿ icon set.
+- 0.3.0 (this) — header v4: `SiteHeader` grows `identityAsTrigger` (the
+  identity chip becomes the menu trigger — pass NO interactive elements in
+  `identitySlot` when on) and `menuFooterSlot` (app-owned bottom row of the
+  menu panel, replaces the built-in EASY ON THE EYES row; not auto-close
+  wrapped). Both optional — omitting them renders v3 exactly, so existing
+  consumers are unaffected. New `PixelAvatar` (ghost = vacant player,
+  player = seeded pac-head body). BREAKING-ish: `.ez-reflow` no longer
+  forces `align-items: start` — grid children stretch to even heights;
+  a grid that truly wants top-aligned cards adds `items-start` itself.
 
 Rule going forward: brand changes land HERE first, sites pull the bump.
 GG's.

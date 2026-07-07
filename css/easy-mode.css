@@ -31,9 +31,7 @@ html[data-ez="true"] .ez-reflow {
 .ez-reflow > * {
   min-width: 0;
 }
-.ez-reflow {
-  align-items: start;
-}
+/* stretch (grid default) keeps card rows even — the uneven-quarters lesson */
 body {
   overflow-wrap: break-word;
 }
