@@ -1,5 +1,14 @@
 # arcade-ui design notes — the package's own punch list
 
+## SHIPPED 0.2.2 (2026-07-07): the burger menu
+
+One menu for all users, every breakpoint (the Lewis Carroll pattern, arcade
+dress): app-injected identity rows up top (avatar block / MY PROFILE /
+SIGN OUT or LOGIN via `menuSlot`), then nav links, then the visibility
+toggle INSIDE the menu — off the bar, per Pac. The coin is a pure brand
+mark now; the identity chip stays persistent on the bar. Future menu rows:
+CONNECTIONS (matrix ID, NIP-39 socials) when profile editing lands.
+
 The brand system's working notes: identity display conventions the sites
 must converge on, and the 0.3 wishlist. Brand changes land HERE first;
 sites pull the bump.
