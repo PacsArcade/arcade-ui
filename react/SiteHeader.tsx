@@ -7,42 +7,43 @@ import EasyModeToggle from "./EasyModeToggle";
 
 export type SiteHeaderLink = { href: string; label: string; coin?: boolean };
 
-/* LEARN and GROW, not the alliteration twins (Pac, 2026-07-07). LOGIN is
-   the door; the identitySlot replaces it once a fren is recognized. */
+/* LEARN and GROW, not the alliteration twins (Pac, 2026-07-07). */
 const DEFAULT_LINKS: SiteHeaderLink[] = [
   { href: "/classes", label: "LEARN" },
   { href: "/campaigns", label: "GROW" },
 ];
 
-/* The arcade's marquee, two decks:
-   — MARQUEE ROW: wordmark left; controls right (EasyModeToggle, then the
-     coin). On mobile the coin IS the menu button (28px art in a 44px
-     target, right corner = thumb zone); on desktop the coin sits beside
-     the wordmark as the brand mark and the nav expands as links.
-   — TELEMETRY TICKER: thin strip below for chain data (BlockClock, HUD
-     white). The wordmark never shares a row with data. Future stats join
-     the ticker, not the marquee. */
+/* The arcade's marquee, three ideas (Pac's header v3, 2026-07-07):
+   — MARQUEE ROW: coin + wordmark left; desktop nav links; the identity chip
+     (persistent "you're in"); and the BURGER far right on EVERY breakpoint.
+   — THE MENU: one panel for all users — identity block (menuSlot, injected
+     by the app: profile / login / sign out / connections), then nav links,
+     then the visibility toggle tucked inside (off the bar, per Pac).
+   — TELEMETRY TICKER: chain data below, never beside the brand. */
 export default function SiteHeader({
   links = DEFAULT_LINKS,
   wordmark = "PAC'S ARCADE",
   coinSrc = "/bitcoin.gif",
   identitySlot,
+  menuSlot,
 }: {
   links?: SiteHeaderLink[];
   wordmark?: string;
   coinSrc?: string;
-  /** The signed-in fren chip (or a LOGIN link) — apps inject it so the
-      header shows who you are, persistently, on every page. */
+  /** The signed-in fren chip (or a LOGIN link) — persistent on the bar. */
   identitySlot?: ReactNode;
+  /** App-injected rows at the top of the burger menu: identity header,
+      profile, login/out, connections. Rendered above nav links. */
+  menuSlot?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   return (
     <header className="relative border-b-2 border-edge">
-      {/* marquee row — brand left, controls right, visibility toggle FAR right */}
+      {/* marquee row */}
       <nav className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
-        {/* desktop brand mark (decorative — the menu is expanded as links) */}
+        {/* brand mark — decorative on every breakpoint now; the burger owns the menu */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={coinSrc} alt="" aria-hidden className="hidden h-7 w-7 flex-none sm:block" />
+        <img src={coinSrc} alt="" aria-hidden className="h-7 w-7 flex-none" />
         <Link href="/" className="min-w-0 whitespace-nowrap font-pixel text-sm text-coin glow-coin">
           {wordmark}
         </Link>
@@ -69,39 +70,43 @@ export default function SiteHeader({
         {/* who you are — persistent, like a nostr client's signed-in name */}
         {identitySlot && <span className="flex min-w-0 items-center">{identitySlot}</span>}
 
-        {/* mobile menu button — the coin */}
+        {/* the burger — far right, every breakpoint, ≥44px target */}
         <button
           type="button"
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label="Menu"
-          className={`grid h-11 w-11 flex-none cursor-pointer place-items-center sm:hidden ${
-            open ? "outline-3 outline-dashed outline-cyan -outline-offset-1" : ""
+          className={`grid h-11 w-11 flex-none cursor-pointer place-items-center border-2 font-pixel text-sm ${
+            open ? "border-cyan text-cyan" : "border-edge text-white/70 hover:border-cyan hover:text-cyan"
           }`}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={coinSrc} alt="" aria-hidden className="h-7 w-7" />
+          {open ? "✕" : "☰"}
         </button>
-
-        {/* visibility toggle — far right, always (Pac, 2026-07-07) */}
-        <EasyModeToggle />
       </nav>
 
-      {/* mobile menu — right-aligned panel dropped from the coin */}
+      {/* the menu — one panel for all users */}
       {open && (
-        <div className="absolute right-3 top-full z-50 w-56 border-2 border-edge bg-panel font-pixel text-[11px] shadow-[0_0_16px_rgba(0,0,0,0.7)] sm:hidden">
-          {links.map((l, i) => (
+        <div className="absolute right-3 top-full z-50 w-64 border-2 border-edge bg-panel shadow-[0_0_16px_rgba(0,0,0,0.7)]">
+          {menuSlot && <div onClick={() => setOpen(false)}>{menuSlot}</div>}
+          {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className={`flex min-h-11 items-center px-4 ${
-                i < links.length - 1 ? "border-b-2 border-edge" : ""
-              } ${l.coin ? "text-coin glow-coin" : "text-cyan"}`}
+              className={`flex min-h-11 items-center border-b-2 border-edge px-4 font-pixel text-[10px] ${
+                l.coin ? "text-coin glow-coin" : "text-cyan"
+              }`}
             >
               {l.label}
             </Link>
           ))}
+          {/* visibility toggle lives in the menu, off the bar (Pac) */}
+          <div className="flex min-h-11 items-center gap-3 px-4 py-2">
+            <EasyModeToggle />
+            <span className="font-pixel text-[9px] uppercase text-white/60">
+              EASY ON THE EYES
+            </span>
+          </div>
         </div>
       )}
 
