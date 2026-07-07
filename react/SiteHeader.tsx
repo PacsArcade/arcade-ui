@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import BlockClock from "./BlockClock";
 import EasyModeToggle from "./EasyModeToggle";
 
 export type SiteHeaderLink = { href: string; label: string; coin?: boolean };
 
+/* LEARN and GROW, not the alliteration twins (Pac, 2026-07-07). LOGIN is
+   the door; the identitySlot replaces it once a fren is recognized. */
 const DEFAULT_LINKS: SiteHeaderLink[] = [
-  { href: "/classes", label: "CLASSES" },
-  { href: "/campaigns", label: "CAMPAIGNS" },
-  { href: "/register", label: "🕹️ SIGN UP", coin: true },
+  { href: "/classes", label: "LEARN" },
+  { href: "/campaigns", label: "GROW" },
 ];
 
 /* The arcade's marquee, two decks:
@@ -25,15 +26,19 @@ export default function SiteHeader({
   links = DEFAULT_LINKS,
   wordmark = "PAC'S ARCADE",
   coinSrc = "/bitcoin.gif",
+  identitySlot,
 }: {
   links?: SiteHeaderLink[];
   wordmark?: string;
   coinSrc?: string;
+  /** The signed-in fren chip (or a LOGIN link) — apps inject it so the
+      header shows who you are, persistently, on every page. */
+  identitySlot?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   return (
     <header className="relative border-b-2 border-edge">
-      {/* marquee row — brand + controls only */}
+      {/* marquee row — brand left, controls right, visibility toggle FAR right */}
       <nav className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
         {/* desktop brand mark (decorative — the menu is expanded as links) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -43,8 +48,6 @@ export default function SiteHeader({
         </Link>
 
         <span className="flex-1" />
-
-        <EasyModeToggle />
 
         {/* desktop nav */}
         <span className="hidden items-center gap-4 font-pixel text-xs sm:flex">
@@ -63,7 +66,10 @@ export default function SiteHeader({
           ))}
         </span>
 
-        {/* mobile menu button — the coin, right corner */}
+        {/* who you are — persistent, like a nostr client's signed-in name */}
+        {identitySlot && <span className="flex min-w-0 items-center">{identitySlot}</span>}
+
+        {/* mobile menu button — the coin */}
         <button
           type="button"
           onClick={() => setOpen(!open)}
@@ -76,6 +82,9 @@ export default function SiteHeader({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={coinSrc} alt="" aria-hidden className="h-7 w-7" />
         </button>
+
+        {/* visibility toggle — far right, always (Pac, 2026-07-07) */}
+        <EasyModeToggle />
       </nav>
 
       {/* mobile menu — right-aligned panel dropped from the coin */}
