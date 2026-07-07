@@ -54,9 +54,14 @@ export default function SiteHeader({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <header className="relative border-b-2 border-edge">
+    <header className="border-b-2 border-edge">
+      {/* the anchor box: nav AND menu panel share this centered max-w-5xl
+          container, so the panel opens under the trigger on every viewport
+          width (anchoring to the full-width header put it at the far edge
+          of wide screens — Pac's off-to-the-right bug, 2026-07-07) */}
+      <div className="relative mx-auto max-w-5xl">
       {/* marquee row */}
-      <nav className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
+      <nav className="flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
         {/* brand mark — decorative on every breakpoint now; the burger owns the menu */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={coinSrc} alt="" aria-hidden className="h-7 w-7 flex-none" />
@@ -148,10 +153,12 @@ export default function SiteHeader({
           )}
         </div>
       )}
+      </div>
 
-      {/* telemetry ticker — chain data lives here on every breakpoint */}
+      {/* telemetry ticker — chain data rides right, under the identity/menu
+          corner (Pac: the block belongs beneath the login menu) */}
       <div className="border-t-2 border-edge bg-[#0a0a0a]">
-        <div className="mx-auto flex min-h-8 max-w-5xl items-center px-4 py-1.5 font-pixel text-[10px] sm:px-6">
+        <div className="mx-auto flex min-h-8 max-w-5xl items-center justify-end px-4 py-1.5 font-pixel text-[10px] sm:px-6">
           <BlockClock />
         </div>
       </div>
