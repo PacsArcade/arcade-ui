@@ -1,35 +1,23 @@
 {
   "name": "@pacsarcade/arcade-ui",
-  "version": "0.1.0",
-  "description": "Pac's Arcade 8-bit crowdfunding UI kit — CRT-authentic components for campaign pages",
+  "version": "0.2.0",
+  "description": "Pac's Arcade brand system — CSS core + React components. Dark-first 8-bit arcade UI shared by pacsarcade.org, pacsarcade.com, frens.earth, and every verse node.",
   "license": "MIT",
-  "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "repository": "github:PacsArcade/arcade-ui",
+  "sideEffects": ["*.css"],
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./styles.css": "./dist/arcade.css"
-  },
-  "files": [
-    "dist",
-    "fonts"
-  ],
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json && node scripts/copy-assets.mjs"
+    ".": "./react/index.ts",
+    "./css": "./css/index.css",
+    "./css/*": "./css/*",
+    "./tailwind": "./tailwind/theme.css",
+    "./fonts/*": "./fonts/*",
+    "./icons/*": "./icons/*"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": ">=18",
+    "next": ">=14"
   },
-  "devDependencies": {
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "typescript": "^5"
+  "peerDependenciesMeta": {
+    "next": { "optional": true }
   }
 }

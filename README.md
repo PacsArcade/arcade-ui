@@ -1,29 +1,73 @@
 # @pacsarcade/arcade-ui
 
-Pac's Arcade 8-bit crowdfunding UI kit — the shared component library behind the
-campaign pages. CRT-authentic but readable: glow lives on headings and banners,
-body copy stays crisp. `coin` yellow is for money surfaces only; `neon` green is
-success/live; `ghost` pink-red is danger.
+One brand, every cabinet. The shared Pac's Arcade UI system: CSS core
+(framework-free), a Tailwind v4 theme layer, React components, fonts, and
+the pixel-&#8383; icon set. Dark-first — everything sits on CRT black.
 
-## Use
+## What's inside
+
+- `css/` — framework-free core. `index.css` pulls tokens + every `pa-*`
+  component class + arcade themes + the visibility toggle mode. Works in
+  plain HTML (pacsarcade-com) with zero build.
+- `tailwind/theme.css` — the `@theme` token block + glow/motion utilities +
+  visibility-toggle rules for the Next apps (org, frens.earth). Import it
+  right after `@import "tailwindcss";`.
+- `react/` — shared components: `SiteHeader`, `BlockClock`,
+  `EasyModeToggle` (the mini-CRT visibility toggle), `CRTOverlay`, plus the
+  `easy-mode` store. The 14
+  campaign components (ArcadeButton, PixelFrame, EnergyBar…) ship compiled
+  in the published 0.1.0 bundle and as `pa-*` classes in `css/arcade.css`.
+- `fonts/` — Retronoid (self-hosted), OpenDyslexic (easy mode). Press
+  Start 2P + Roboto load from Google in `fonts.css` for static sites; Next
+  apps keep using `next/font`.
+- `icons/` — `bitcoin.gif` (the canonical spinning coin — headers, menu
+  buttons, gates) + the favicon PNG family derived from its first frame.
+- `preview.html` — open directly in a browser: tokens, components, and all
+  arcade themes side by side.
+
+## Quick start — static site
+
+```html
+<link rel="stylesheet" href="arcade-ui/css/index.css">
+<body class="pa-screen">…</body>
+```
+
+## Quick start — Next.js (Tailwind v4)
+
+```bash
+npm i github:PacsArcade/arcade-ui
+```
+
+```css
+/* globals.css */
+@import "tailwindcss";
+@import "@pacsarcade/arcade-ui/tailwind";
+```
+
+```ts
+// next.config.ts
+const nextConfig = { transpilePackages: ["@pacsarcade/arcade-ui"] };
+```
 
 ```tsx
-import { PixelFrame, ArcadeButton, EnergyBar, CRTOverlay } from "@pacsarcade/arcade-ui";
-import "@pacsarcade/arcade-ui/styles.css";
-
-<PixelFrame glow="coin" title="Funding">
-  <EnergyBar raisedSats={1_250_000} goalSats={5_000_000} pendingSats={50_000} />
-  <ArcadeButton variant="coin" size="lg">INSERT COIN</ArcadeButton>
-</PixelFrame>
-<CRTOverlay />
+import { SiteHeader, CRTOverlay } from "@pacsarcade/arcade-ui";
 ```
 
-## Build
+## Theming — arcade themes + accents
 
-```sh
-npm ci
-npm run build   # tsc → dist/ + copies arcade.css
+Dark is the base. A server owner picks a theme cabinet and/or a flair
+accent — **semantic hues never move** (coin = money, neon = live, cyan =
+info, ghost = danger). See `THEMING.md`.
+
+```html
+<html data-arcade-theme="vapor">     <!-- theme cabinet -->
+<html style="--pa-pink:#39a7ff">     <!-- or just re-accent the flair slot -->
 ```
 
-Consumed by frens.earth and pacsarcade.org campaign pages, and synced to
-claude.ai/design via `/design-sync`.
+## House rules (short form)
+
+Dark-first `pa-screen`; coin gold for money ONLY; "fren" never "friend";
+certs are ETCHED; no countdowns, no scarcity theater; ≥44px touch targets;
+no border radius. Full contract lives in the org repo's design docs.
+
+GG's 💛

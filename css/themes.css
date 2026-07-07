@@ -1,0 +1,41 @@
+/* Arcade themes — how a server owner re-skins their arcade.
+   DARK IS THE BASE. Themes move SURFACES (void/panel/edge) and the FLAIR
+   accent (--pa-pink) only. The semantic hues never move:
+     coin #FFD700 = money · neon #39FF14 = live/success ·
+     cyan #00FFFF = info/links · ghost #E91E63 = danger.
+   Apply on <html data-arcade-theme="…"> or any .pa-screen[data-arcade-theme].
+   Both --pa-* (CSS core) and --color-* (Tailwind apps) are overridden.
+
+   Custom single accent instead of a theme: style="--pa-pink:#39a7ff"
+   (and --color-pink for Tailwind apps). */
+
+/* MIDNIGHT — the default cabinet. Declared for completeness. */
+[data-arcade-theme="midnight"] {
+  --pa-void: #050505;  --color-void: #050505;
+  --pa-panel: #1a1a1a; --color-panel: #1a1a1a;
+  --pa-edge: #333333;  --color-edge: #333333;
+  --pa-pink: #ff00ff;  --color-pink: #ff00ff;
+}
+
+/* VAPOR — deep violet tubes. Flair nods to the old node-console magenta. */
+[data-arcade-theme="vapor"] {
+  --pa-void: #070510;  --color-void: #070510;
+  --pa-panel: #171226; --color-panel: #171226;
+  --pa-edge: #3a2f55;  --color-edge: #3a2f55;
+  --pa-pink: #ff35c8;  --color-pink: #ff35c8;
+}
+
+/* TERMINAL — green-phosphor surfaces; flair stays magenta for contrast. */
+[data-arcade-theme="terminal"] {
+  --pa-void: #030803;  --color-void: #030803;
+  --pa-panel: #101a10; --color-panel: #101a10;
+  --pa-edge: #234023;  --color-edge: #234023;
+}
+
+/* ARCTIC — cold blue glass; flair re-accents to ice blue. */
+[data-arcade-theme="arctic"] {
+  --pa-void: #02060a;  --color-void: #02060a;
+  --pa-panel: #0e1620; --color-panel: #0e1620;
+  --pa-edge: #1f3547;  --color-edge: #1f3547;
+  --pa-pink: #39a7ff;  --color-pink: #39a7ff;
+}

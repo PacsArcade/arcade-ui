@@ -1,0 +1,39 @@
+/* EASY ON THE EYES — accessibility mode (framework-free version).
+   The toggle sets data-ez="true" on <html>, persisted in
+   localStorage["pa-easy-mode"]. Effects: CRT scanlines off + OpenDyslexic
+   body text. Display faces (pixel/arcade) stay. */
+
+html[data-ez="true"] {
+  --pa-font-body: "OpenDyslexic", "Roboto", sans-serif;
+}
+html[data-ez="true"] body {
+  font-family: "OpenDyslexic", "Roboto", sans-serif;
+  /* OpenDyslexic runs ~15–20% wider than Roboto; a step down reads better
+     than overflow. */
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+html[data-ez="true"] .pa-crt,
+html[data-ez="true"] .crt-overlay {
+  display: none;
+}
+
+/* Layout tolerance — safe in BOTH modes. Grids marked .ez-reflow drop
+   their densest column count under easy mode (4-up → 2-up → 1-up). */
+html[data-ez="true"] .ez-reflow {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  html[data-ez="true"] .ez-reflow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.ez-reflow > * {
+  min-width: 0;
+}
+.ez-reflow {
+  align-items: start;
+}
+body {
+  overflow-wrap: break-word;
+}

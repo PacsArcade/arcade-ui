@@ -1,0 +1,35 @@
+/* Pac's Arcade fonts.
+   Retronoid + OpenDyslexic are self-hosted (easy mode must not lean on a
+   third-party CDN). Press Start 2P + Roboto load from Google here for
+   STATIC sites only — the Next apps load them via next/font instead and
+   should NOT import this file's Google line twice. */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap");
+
+@font-face {
+  font-family: "Retronoid";
+  src: url("./Retronoid.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Retronoid";
+  src: url("./Retronoid Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("./OpenDyslexic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("./OpenDyslexic-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

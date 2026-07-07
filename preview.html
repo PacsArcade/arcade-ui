@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>arcade-ui — arcade theme preview</title>
+<link rel="icon" href="icons/icon-32.png" type="image/png">
+<link rel="stylesheet" href="css/index.css">
+<style>
+  html { background: #050505; }
+  body { margin: 0; }
+
+  /* header */
+  .hdr {
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 24px; min-height: 68px; box-sizing: border-box;
+    border-bottom: 2px solid var(--pa-edge);
+  }
+  .hdr-coin {
+    display: grid; place-items: center;
+    width: 44px; height: 44px; flex: none;
+  }
+  .hdr-coin img { display: block; width: 30px; height: 30px; }
+
+  /* the visibility toggle — mini CRT, same anatomy as the React EasyModeToggle */
+  .vis-toggle {
+    display: grid; place-items: center;
+    width: 48px; height: 44px; padding: 0; flex: none;
+    background: var(--pa-panel); border: 2px solid var(--pa-edge);
+    cursor: pointer;
+  }
+  .vis-toggle:hover { border-color: var(--pa-cyan); }
+  .vis-toggle .screen {
+    display: flex; justify-content: center; gap: 3px;
+    width: 26px; height: 17px; overflow: hidden; box-sizing: border-box;
+    border: 2px solid rgba(255, 255, 255, 0.4); background: var(--pa-void);
+  }
+  .vis-toggle .col { width: 3px; height: 9px; background: var(--pa-neon); animation: matrix-fall 1.3s linear infinite; }
+  .vis-toggle .col:nth-child(2) { animation-delay: -0.5s; }
+  .vis-toggle .col:nth-child(3) { animation-delay: -0.9s; }
+  .vis-toggle .stand { width: 12px; height: 2px; background: rgba(255, 255, 255, 0.4); margin-top: 2px; }
+  @keyframes matrix-fall {
+    from { transform: translateY(-110%); }
+    to { transform: translateY(170%); }
+  }
+  @media (prefers-reduced-motion: reduce) { .vis-toggle .col { animation: none; } }
+  html[data-ez="true"] .vis-toggle { border-color: var(--pa-neon); box-shadow: 0 0 8px rgba(57, 255, 20, 0.5); }
+  html[data-ez="true"] .vis-toggle .col { animation: none; transform: translateY(40%); background: rgba(255, 255, 255, 0.4); }
+
+  /* theme grid — one uniform card structure, everything on a strict rhythm */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  }
+  .demo-cell { padding: 24px; border-bottom: 1px solid #222; border-right: 1px solid #222; box-sizing: border-box; }
+  .cell-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .stat-row .pa-stat { min-width: 0; }
+  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; padding-right: 4px; }
+  .btn-row .pa-btn { width: 100%; font-size: 0.55rem; padding: 0.7rem 0.5rem; }
+  .sem-row { display: flex; align-items: center; gap: 18px; border-top: 2px dashed var(--pa-edge); padding-top: 12px; }
+  .sem { font-family: var(--pa-font-pixel); font-size: 9px; white-space: nowrap; }
+</style>
+</head>
+<body class="pa-screen">
+
+  <div class="hdr">
+    <span class="hdr-coin" title="Pac's Arcade">
+      <img src="icons/bitcoin.gif" alt="">
+    </span>
+    <span style="font-family:var(--pa-font-pixel);font-size:14px;color:var(--pa-coin);text-shadow:0 0 4px rgba(255,215,0,.5),0 0 18px rgba(255,215,0,.3);white-space:nowrap">PAC'S ARCADE</span>
+    <span style="font-family:var(--pa-font-pixel);font-size:9px;color:var(--pa-fg-dim);white-space:nowrap">/ ARCADE-UI 0.2.0</span>
+    <span style="flex:1"></span>
+    <span style="font-family:var(--pa-font-pixel);font-size:8px;color:var(--pa-fg-dim);white-space:nowrap">EASIER ON THE EYES</span>
+    <button class="vis-toggle" id="ez" type="button" aria-pressed="false"
+      aria-label="Easier on the eyes — turn CRT scanlines off and use the OpenDyslexic font"
+      title="EASIER ON THE EYES — CRT OFF + OPENDYSLEXIC BODY TEXT">
+      <span style="display:flex;flex-direction:column;align-items:center">
+        <span class="screen"><span class="col"></span><span class="col"></span><span class="col"></span></span>
+        <span class="stand"></span>
+      </span>
+    </button>
+  </div>
+
+  <div class="demo-grid" id="grid"></div>
+
+  <div style="padding:18px 24px;font-family:var(--pa-font-body);font-size:13px;color:var(--pa-fg-dim);max-width:760px;line-height:1.6">
+    Surfaces and the flair accent move per arcade theme; coin gold (money),
+    neon (live), cyan (info), and ghost (danger) never do. Custom accent
+    without a theme: <span style="font-family:ui-monospace,Menlo,monospace;color:var(--pa-cyan)">style="--pa-pink:#39a7ff"</span>. GG's.
+  </div>
+
+  <div class="pa-crt"></div>
+
+  <script>
+    var THEMES = ["midnight", "vapor", "terminal", "arctic"];
+    var grid = document.getElementById("grid");
+    THEMES.forEach(function (t) {
+      var cell = document.createElement("section");
+      cell.className = "pa-screen demo-cell";
+      cell.setAttribute("data-arcade-theme", t);
+      cell.innerHTML =
+        '<div class="cell-head">' +
+          '<span style="font-family:var(--pa-font-pixel);font-size:11px;color:var(--pa-coin)">' + t.toUpperCase() + "</span>" +
+          '<span style="font-family:var(--pa-font-pixel);font-size:8px;color:var(--pa-fg-dim)">data-arcade-theme="' + t + '"</span>' +
+        "</div>" +
+        '<div class="pa-frame" style="padding:1.25rem">' +
+          '<span class="pa-frame__title">FUNDING</span>' +
+          '<div class="stat-row">' +
+            '<div class="pa-stat"><span class="pa-stat__value" style="color:var(--pa-coin)">2,600,000</span><span class="pa-stat__label">RAISED (SATS)</span></div>' +
+            '<div class="pa-stat"><span class="pa-stat__value">21,000,000</span><span class="pa-stat__label">GOAL (SATS)</span></div>' +
+          "</div>" +
+          '<div class="btn-row">' +
+            '<button class="pa-btn pa-btn--coin" type="button">INSERT COIN</button>' +
+            '<button class="pa-btn pa-btn--cyan" type="button">DETAILS</button>' +
+          "</div>" +
+          '<div class="sem-row">' +
+            '<span class="sem pa-glow-pink" style="color:var(--pa-pink)">FLAIR</span>' +
+            '<span class="sem" style="color:var(--pa-neon)">&#10003; LIVE</span>' +
+            '<span class="sem" style="color:var(--pa-cyan)">INFO</span>' +
+            '<span class="sem" style="color:var(--pa-ghost)">DANGER</span>' +
+          "</div>" +
+        "</div>" +
+        '<p style="font-family:var(--pa-font-body);font-size:13px;color:rgba(255,255,255,.72);margin:14px 0 0;line-height:1.6">Body copy sample on the ' + t + " cabinet. The visibility toggle up top swaps this face to OpenDyslexic and lifts the scanlines.</p>";
+      grid.appendChild(cell);
+    });
+
+    var ez = document.getElementById("ez");
+    ez.addEventListener("click", function () {
+      var on = document.documentElement.dataset.ez === "true";
+      document.documentElement.dataset.ez = on ? "false" : "true";
+      ez.setAttribute("aria-pressed", String(!on));
+    });
+  </script>
+</body>
+</html>

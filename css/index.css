@@ -1,0 +1,7 @@
+/* @pacsarcade/arcade-ui — CSS core entry.
+   Link this ONE file from a static site. Dark-first: put class="pa-screen"
+   on <body> (or any standalone section). */
+@import "../fonts/fonts.css";
+@import "./arcade.css";     /* tokens + every pa-* component class (published 0.1.0 styles) */
+@import "./themes.css";     /* verse preset cabinets — dark base, semantics locked */
+@import "./easy-mode.css";  /* EASY ON THE EYES: data-ez font swap + layout tolerance */
