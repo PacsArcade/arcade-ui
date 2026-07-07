@@ -71,7 +71,7 @@ html[data-ez="true"] .ez-reflow { grid-template-columns: 1fr; }
   html[data-ez="true"] .ez-reflow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .ez-reflow > * { min-width: 0; }
-.ez-reflow { align-items: start; }
+/* stretch (grid default) keeps card rows even — the uneven-quarters lesson */
 body { overflow-wrap: break-word; }
 
 /* Arcade themes — same contract as css/themes.css (surfaces + flair only). */

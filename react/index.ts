@@ -1,6 +1,7 @@
 export { default as SiteHeader } from "./SiteHeader";
 export { default as BlockClock, useTipHeight } from "./BlockClock";
 export { default as EasyModeToggle } from "./EasyModeToggle";
+export { default as PixelAvatar } from "./PixelAvatar";
 export { default as CRTOverlay } from "./CRTOverlay";
 export {
   EASY_MODE_KEY,
