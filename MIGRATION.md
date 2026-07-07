@@ -23,6 +23,14 @@ npm i github:PacsArcade/arcade-ui
    `@import "tailwindcss";`. KEEP app-specific pieces local: crt-letter-on,
    flicker-once, danger-pulse, nsec-blur/reveal, screen-shake, and the
    legacy `@layer base` styles.
+   **⚠ REQUIRED — add the `@source` line or the header breaks** (Tailwind
+   v4 never scans node_modules, so utilities used only by packaged
+   components don't generate: the coin renders at natural gif size and
+   nav gaps vanish — found the hard way on pacsarcade.org, 2026-07-07):
+   ```css
+   @source "../../node_modules/@pacsarcade/arcade-ui/react";
+   ```
+   (Path is relative to your globals.css.)
 3. Delete `src/components/SiteHeader.tsx`, `BlockClock.tsx`,
    `EasyModeToggle.tsx`, `CRTOverlay.tsx`, `src/lib/easy-mode.ts`.
    Re-import from `@pacsarcade/arcade-ui` (named exports; SiteHeader takes
