@@ -72,6 +72,28 @@ tokens verbatim. Spec: `handoff/poke-node-console/DESIGN-DOC.md`. When the
 webclient/admin pages get a build step someday, they consume `css/index.css`
 directly.
 
+## The console module
+
+The operator console is a MODULE, not any one site's furniture (Pac,
+2026-07-11 — frens.earth `docs/operator-console.md` is the spec; this
+package is its "extract to a package" ledger item). Adopting it:
+
+1. Write the manifest APP-SIDE, e.g. `src/lib/console.ts`: one
+   `ConsoleSite` (identity from your env/verse config — `home`, `domain`,
+   the `deck` hub route) and one `ConsoleRoom[]` (your real rooms only).
+2. Mount `ConsoleDeck` on the hub route and `ConsoleNav` on every room
+   page, passing `site`, `rooms`, and the page's own `currentPath`.
+3. Keep your gate where it is: auth/whoami never enters the package. The
+   deck and rail render only behind the site's own gate (frens.earth:
+   OperatorGate + operator-auth; pacsarcade-org: console-auth +
+   `/api/console/login`).
+
+Adoption order: pacsarcade-org's `/console` first (round 1, ships with
+0.4.0). frens.earth migrates round 2 — its `AdminNav` + `/a` deck page
+(the source this was extracted from) drop in favor of the packaged
+`ConsoleNav`/`ConsoleDeck`, its `lib/console.ts` manifest gains the
+`deck: "/a"` field, and `OperatorGate` stays app-side, unchanged.
+
 ## Versioning
 
 - 0.1.0 — published campaign components (ArcadeButton … TrustBadge) + pa-* CSS.
@@ -87,6 +109,12 @@ directly.
   player = seeded pac-head body). BREAKING-ish: `.ez-reflow` no longer
   forces `align-items: start` — grid children stretch to even heights;
   a grid that truly wants top-aligned cards adds `items-start` itself.
+
+- 0.4.0 (this) — the console module: `ConsoleSite`/`ConsoleRoom` manifest
+  types + `ConsoleNav` (bridge rail: ⌂ site exit, ⚓ DECK, room links,
+  current room lit from `currentPath`) + `ConsoleDeck` (hub grid of room
+  cards, app extras as children). Entirely props-driven; gating stays
+  app-side. Purely additive — existing consumers are unaffected.
 
 Rule going forward: brand changes land HERE first, sites pull the bump.
 GG's.

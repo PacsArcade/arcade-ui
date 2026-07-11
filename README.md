@@ -13,8 +13,9 @@ the pixel-&#8383; icon set. Dark-first — everything sits on CRT black.
   visibility-toggle rules for the Next apps (org, frens.earth). Import it
   right after `@import "tailwindcss";`.
 - `react/` — shared components: `SiteHeader`, `BlockClock`,
-  `EasyModeToggle` (the mini-CRT visibility toggle), `CRTOverlay`, plus the
-  `easy-mode` store. The 14
+  `EasyModeToggle` (the mini-CRT visibility toggle), `CRTOverlay`, the
+  `easy-mode` store, plus the console module (`ConsoleNav`, `ConsoleDeck`,
+  the `ConsoleSite`/`ConsoleRoom` manifest types). The 14
   campaign components (ArcadeButton, PixelFrame, EnergyBar…) ship compiled
   in the published 0.1.0 bundle and as `pa-*` classes in `css/arcade.css`.
 - `fonts/` — Retronoid (self-hosted), OpenDyslexic (easy mode). Press
@@ -52,6 +53,27 @@ const nextConfig = { transpilePackages: ["@pacsarcade/arcade-ui"] };
 ```tsx
 import { SiteHeader, CRTOverlay } from "@pacsarcade/arcade-ui";
 ```
+
+## The console module
+
+Every cabinet gets the same admin deck: generic operator-console
+primitives, driven entirely by a manifest the APP owns.
+
+- `ConsoleSite` / `ConsoleRoom` — the manifest types. A site declares its
+  identity (`home`, `domain`, `deck` hub route) and its rooms once, in its
+  own `lib/console` file.
+- `ConsoleNav` — the bridge rail on every room page: ⌂ site exit ▸ ⚓ DECK
+  ▸ room links, current room lit from `currentPath`.
+- `ConsoleDeck` — the hub: kicker + marquee + the grid of room cards, with
+  app-owned extras as children.
+
+The BOUNDARY: auth stays app-side. Each site brings its own gate and
+whoami (frens.earth: OperatorGate + operator-auth; pacsarcade-org:
+console-auth) and mounts these components behind it — the module renders
+furniture, it never guards it. First consumer: pacsarcade-org's
+`/console`. frens.earth migrates its `/a` deck onto it round 2 (its
+`AdminNav` + deck page are the reference this module was extracted from —
+see `docs/operator-console.md` in that repo).
 
 ## Theming — arcade themes + accents
 
