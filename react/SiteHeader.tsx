@@ -32,6 +32,7 @@ export default function SiteHeader({
   identityAsTrigger = false,
   menuSlot,
   menuFooterSlot,
+  tickerSlot,
 }: {
   links?: SiteHeaderLink[];
   wordmark?: string;
@@ -51,6 +52,12 @@ export default function SiteHeader({
       Not wrapped in the auto-close handler — toggles inside it must not
       close the menu. When omitted, the built-in toggle row renders. */
   menuFooterSlot?: ReactNode;
+  /** Replaces the built-in BLOCK ticker (BlockClock) inside the telemetry
+      band under the marquee. The band itself stays — right-aligned, under
+      the identity/menu corner (Pac: the block belongs beneath the login
+      menu) — only what rides in it changes (e.g. an app's strip clock).
+      When omitted, the classic BlockClock renders (v3/v4 exactly). */
+  tickerSlot?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -159,7 +166,7 @@ export default function SiteHeader({
           corner (Pac: the block belongs beneath the login menu) */}
       <div className="border-t-2 border-edge bg-[#0a0a0a]">
         <div className="mx-auto flex min-h-8 max-w-5xl items-center justify-end px-4 py-1.5 font-pixel text-[10px] sm:px-6">
-          <BlockClock />
+          {tickerSlot ?? <BlockClock />}
         </div>
       </div>
     </header>
