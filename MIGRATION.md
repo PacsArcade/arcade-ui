@@ -16,10 +16,10 @@ npm i github:PacsArcade/arcade-ui
 ## 1. pacsarcade-org
 
 1. `npm i github:PacsArcade/arcade-ui`, and in `next.config.ts`:
-   `transpilePackages: ["@pacsarcade/arcade-ui"]`.
+   `transpilePackages: ["@frens-earth/arcade-ui"]`.
 2. `globals.css`: delete the `@theme` block, glow utilities, blink/pulse/
    matrix keyframes, easy-mode rules — replace with
-   `@import "@pacsarcade/arcade-ui/tailwind";` right after
+   `@import "@frens-earth/arcade-ui/tailwind";` right after
    `@import "tailwindcss";`. KEEP app-specific pieces local: crt-letter-on,
    flicker-once, danger-pulse, nsec-blur/reveal, screen-shake, and the
    legacy `@layer base` styles.
@@ -28,12 +28,12 @@ npm i github:PacsArcade/arcade-ui
    components don't generate: the coin renders at natural gif size and
    nav gaps vanish — found the hard way on pacsarcade.org, 2026-07-07):
    ```css
-   @source "../../node_modules/@pacsarcade/arcade-ui/react";
+   @source "../../node_modules/@frens-earth/arcade-ui/react";
    ```
    (Path is relative to your globals.css.)
 3. Delete `src/components/SiteHeader.tsx`, `BlockClock.tsx`,
    `EasyModeToggle.tsx`, `CRTOverlay.tsx`, `src/lib/easy-mode.ts`.
-   Re-import from `@pacsarcade/arcade-ui` (named exports; SiteHeader takes
+   Re-import from `@frens-earth/arcade-ui` (named exports; SiteHeader takes
    optional `links`/`wordmark`/`coinSrc` props — org's defaults match).
    Note: the packaged SiteHeader/BlockClock are the PATCHED versions
    (marquee + ticker, coin menu right at 28px, HUD-white block) — applying
