@@ -1,8 +1,8 @@
-/* @pacsarcade/arcade-ui — Tailwind v4 theme layer for the Next apps
+/* @frens-earth/arcade-ui — Tailwind v4 theme layer for the Next apps
    (pacsarcade-org, frens.earth). In your globals.css:
 
      @import "tailwindcss";
-     @import "@pacsarcade/arcade-ui/tailwind";
+     @import "@frens-earth/arcade-ui/tailwind";
 
    Fonts still come from next/font (Retronoid/OpenDyslexic local, Press
    Start 2P + Roboto Google) exposing --font-retronoid / --font-press-start

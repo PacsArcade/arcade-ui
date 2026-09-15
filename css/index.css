@@ -1,4 +1,4 @@
-/* @pacsarcade/arcade-ui — CSS core entry.
+/* @frens-earth/arcade-ui — CSS core entry.
    Link this ONE file from a static site. Dark-first: put class="pa-screen"
    on <body> (or any standalone section). */
 @import "../fonts/fonts.css";

@@ -1,4 +1,4 @@
-# @pacsarcade/arcade-ui
+# @frens-earth/arcade-ui
 
 One brand, every cabinet. The shared Pac's Arcade UI system: CSS core
 (framework-free), a Tailwind v4 theme layer, React components, fonts, and
@@ -42,16 +42,16 @@ npm i github:PacsArcade/arcade-ui
 ```css
 /* globals.css */
 @import "tailwindcss";
-@import "@pacsarcade/arcade-ui/tailwind";
+@import "@frens-earth/arcade-ui/tailwind";
 ```
 
 ```ts
 // next.config.ts
-const nextConfig = { transpilePackages: ["@pacsarcade/arcade-ui"] };
+const nextConfig = { transpilePackages: ["@frens-earth/arcade-ui"] };
 ```
 
 ```tsx
-import { SiteHeader, CRTOverlay } from "@pacsarcade/arcade-ui";
+import { SiteHeader, CRTOverlay } from "@frens-earth/arcade-ui";
 ```
 
 ## The console module
